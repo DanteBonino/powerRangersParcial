@@ -64,3 +64,9 @@ maximoSegun transformador unValor otroValor
 --b
 rangerMasPoderoso :: [PowerRanger] -> PowerRanger
 rangerMasPoderoso = maximumBy nivelDePelea
+
+--Punto 6:
+rangerHabilidoso :: PowerRanger -> Bool
+rangerHabilidoso = ((>= 5). length . superHabilidades)
+
+--Punto 7:
