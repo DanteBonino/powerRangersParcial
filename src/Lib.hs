@@ -33,3 +33,11 @@ ponerEnMayusculaLaPrimerLetra (primerLetra : restoDeLetras) = toUppercase primer
 
 calcularNivelDePelea :: Persona -> Int
 calcularNivelDePelea = (sum . map length . habilidades) --También podría hacer foldr ((+) . length) 0 y no hacer sum . map
+
+--Punto 3:
+formarEquipoRanger :: [String] -> [Persona] -> [PowerRanger]
+formarEquipoRanger unosColores []  = []
+formarEquipoRanger [] unasPersonas = []
+formarEquipoRanger (unColor : restoDeColores) (unaPersona : restoDePersonas)
+    | esBuena unaPersona = convertirEnPowerRanger unColor unaPersona : formarEquipoRanger restoDeColores restoDePersonas
+    | otherwise          = formarEquipoRanger  (unColor : restoDeColores) restoDePersonas
