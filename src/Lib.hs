@@ -20,3 +20,16 @@ powerRangerRojo :: PowerRanger
 powerRangerRojo = PowerRanger "rojo" ["superBailar"] 400
 
 --Punto 2:
+type Color = String
+
+convertirEnPowerRanger :: Color -> Persona -> PowerRanger
+convertirEnPowerRanger unColor unaPersona = PowerRanger unColor ((potenciarHabilidades . habilidades) unaPersona) (calcularNivelDePelea unaPersona)
+
+potenciarHabilidades :: [String] -> [String]
+potenciarHabilidades = map (("super" ++) . ponerEnMayusculaLaPrimerLetra)
+
+ponerEnMayusculaLaPrimerLetra :: String -> String
+ponerEnMayusculaLaPrimerLetra (primerLetra : restoDeLetras) = toUppercase primerLetra ++ restoDeLetras 
+
+calcularNivelDePelea :: Persona -> Int
+calcularNivelDePelea = (sum . map length . habilidades) --También podría hacer foldr ((+) . length) 0 y no hacer sum . map
