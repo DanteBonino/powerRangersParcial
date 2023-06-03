@@ -41,3 +41,26 @@ formarEquipoRanger [] unasPersonas = []
 formarEquipoRanger (unColor : restoDeColores) (unaPersona : restoDePersonas)
     | esBuena unaPersona = convertirEnPowerRanger unColor unaPersona : formarEquipoRanger restoDeColores restoDePersonas
     | otherwise          = formarEquipoRanger  (unColor : restoDeColores) restoDePersonas
+
+--Punto 4:
+--a
+findOrElse :: (a -> Bool) -> a -> [a] -> a
+findOrElse unaCondicion unValor unosValores
+    | any unaCondicion unosValores = (head . filter unaCondicion) unosValores
+    | otherwise                    = unValor
+--b
+rangerLider :: [PowerRanger] -> PowerRanger
+rangerLider unGrupoDeRangers = findOrElse ((== "rojo") . color) (head unGrupoDeRangers) unGrupoDeRangers
+
+--Punto 5:
+--a
+maximumBy :: (Ord a) => (b -> a) -> [b] -> b
+maximumBy transformador = foldl1 (maximoSegun transformador)
+
+maximoSegun ::(Ord a) => (b -> a) -> b -> b -> b
+maximoSegun transformador unValor otroValor
+    | transformador unValor > transformador otroValor = unValor
+    | otherwise                                       = otroValor
+--b
+rangerMasPoderoso :: [PowerRanger] -> PowerRanger
+rangerMasPoderoso = maximumBy nivelDePelea
