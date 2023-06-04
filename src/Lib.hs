@@ -52,7 +52,7 @@ findOrElse unaCondicion unValor unosValores
     | otherwise                    = unValor
 --b
 rangerLider :: [PowerRanger] -> PowerRanger
-rangerLider unGrupoDeRangers = findOrElse ((== "rojo") . color) (head unGrupoDeRangers) unGrupoDeRangers
+rangerLider  = lider color
 
 --Punto 5:
 --a
@@ -83,3 +83,16 @@ alfa5 = PowerRanger "metalico" ["reparar cosas", cycle "ay"] 100
 -- donde sumaDeLongitudDeHabilidades = (cantidadDeLetrasDeTodasLasPalabras . superHabilidades)
 
 --Punto 8:
+data ChicaPoderosa = ChicaPoderosa{
+    cantidadDePelo :: Int,
+    colorDeChica          :: String
+}
+
+chicaLider :: [ChicaPoderosa] -> ChicaPoderosa
+chicaLider = lider colorDeChica
+
+lider :: (a->String)-> [a] -> a
+lider f listaDeValores = findOrElse (esRojo . f) (head listaDeValores) listaDeValores
+
+esRojo :: String -> Bool
+esRojo = (== "rojo")
