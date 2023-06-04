@@ -12,7 +12,7 @@ dante = Persona ["falta de atencion"] True
 
 --b
 data PowerRanger = PowerRanger{
-    color            :: String,
+    color            :: Color,
     superHabilidades :: [String],
     nivelDePelea     :: Int
 }
@@ -37,12 +37,16 @@ calcularNivelDePelea = (cantidadDeLetrasDeTodasLasPalabras . habilidades) --Tamb
 cantidadDeLetrasDeTodasLasPalabras :: [String] -> Int
 cantidadDeLetrasDeTodasLasPalabras = sum . map length
 --Punto 3:
-formarEquipoRanger :: [String] -> [Persona] -> [PowerRanger]
+formarEquipoRanger :: [String] -> [Persona] -> [PowerRanger] 
 formarEquipoRanger unosColores []  = []
 formarEquipoRanger [] unasPersonas = []
 formarEquipoRanger (unColor : restoDeColores) (unaPersona : restoDePersonas)
     | esBuena unaPersona = convertirEnPowerRanger unColor unaPersona : formarEquipoRanger restoDeColores restoDePersonas
     | otherwise          = formarEquipoRanger  (unColor : restoDeColores) restoDePersonas
+
+--Otra alternativa:
+formarEquipoRangerV2 :: [String] -> [Persona] -> [PowerRanger]
+formarEquipoRangerV2 unosColores = (zipWith convertirEnPowerRanger unosColores . filter esBuena) --Los filtro primero y después aplico zip pq si no agarra todos los valores
 
 --Punto 4:
 --a
@@ -73,19 +77,19 @@ esRangerHabilidoso = ((>= 5). length . superHabilidades)
 
 --Punto 7:
 alfa5 :: PowerRanger
-alfa5 = PowerRanger "metalico" ["reparar cosas", cycle "ay"] 100
+alfa5 = PowerRanger "metalico" ["reparar cosas", cycle "ay"] 0 --Pq no sabe pelear
 
 --b
 --Función que terminaría:
 -- rangerHabilidoso alfa5, ya que, si bien una habilidad es infinitamente larga, eso a dicha función no le importa pq lo que considera es la cantidad de elementos que tiene la lista de superHabilidadades y nó la longitud de los subElementos
 --Función que no terminaría:
--- maximumBy sumaDeLaLongitudDeHabilidades [powerRangerRojo, alfa5] -> Acá no terminaría más pq no podría calcular la sumaDeLaLongitudDeHabilidades de alfa5, dado que length para terminar de ejecutarse debe recorrer toda la lista y si se hace length de algo infinito, loopea
--- donde sumaDeLongitudDeHabilidades = (cantidadDeLetrasDeTodasLasPalabras . superHabilidades)
+-- maximumBy (cantidadDeLetrasDeTodasLasPalabras . superHabilidades) [powerRangerRojo, alfa5] -> Acá no terminaría más pq no podría calcular la sumaDeLaLongitudDeHabilidades de alfa5, dado que length para terminar de ejecutarse debe recorrer toda la lista y si se hace length de algo infinito, loopea
+--
 
 --Punto 8:
 data ChicaPoderosa = ChicaPoderosa{
     cantidadDePelo :: Int,
-    colorDeChica          :: String
+    colorDeChica   :: Color
 }
 
 chicaLider :: [ChicaPoderosa] -> ChicaPoderosa
@@ -96,3 +100,4 @@ lider f listaDeValores = findOrElse (esRojo . f) (head listaDeValores) listaDeVa
 
 esRojo :: String -> Bool
 esRojo = (== "rojo")
+
