@@ -32,8 +32,10 @@ ponerEnMayusculaLaPrimerLetra :: String -> String
 ponerEnMayusculaLaPrimerLetra (primerLetra : restoDeLetras) = toUppercase primerLetra ++ restoDeLetras 
 
 calcularNivelDePelea :: Persona -> Int
-calcularNivelDePelea = (sum . map length . habilidades) --También podría hacer foldr ((+) . length) 0 y no hacer sum . map
+calcularNivelDePelea = (cantidadDeLetrasDeTodasLasPalabras . habilidades) --También podría hacer foldr ((+) . length) 0 y no hacer sum . map
 
+cantidadDeLetrasDeTodasLasPalabras :: [String] -> Int
+cantidadDeLetrasDeTodasLasPalabras = sum . map length
 --Punto 3:
 formarEquipoRanger :: [String] -> [Persona] -> [PowerRanger]
 formarEquipoRanger unosColores []  = []
@@ -66,7 +68,18 @@ rangerMasPoderoso :: [PowerRanger] -> PowerRanger
 rangerMasPoderoso = maximumBy nivelDePelea
 
 --Punto 6:
-rangerHabilidoso :: PowerRanger -> Bool
-rangerHabilidoso = ((>= 5). length . superHabilidades)
+esRangerHabilidoso :: PowerRanger -> Bool
+esRangerHabilidoso = ((>= 5). length . superHabilidades)
 
 --Punto 7:
+alfa5 :: PowerRanger
+alfa5 = PowerRanger "metalico" ["reparar cosas", cycle "ay"] 100
+
+--b
+--Función que terminaría:
+-- rangerHabilidoso alfa5, ya que, si bien una habilidad es infinitamente larga, eso a dicha función no le importa pq lo que considera es la cantidad de elementos que tiene la lista de superHabilidadades y nó la longitud de los subElementos
+--Función que no terminaría:
+-- maximumBy sumaDeLaLongitudDeHabilidades [powerRangerRojo, alfa5] -> Acá no terminaría más pq no podría calcular la sumaDeLaLongitudDeHabilidades de alfa5, dado que length para terminar de ejecutarse debe recorrer toda la lista y si se hace length de algo infinito, loopea
+-- donde sumaDeLongitudDeHabilidades = (cantidadDeLetrasDeTodasLasPalabras . superHabilidades)
+
+--Punto 8:
